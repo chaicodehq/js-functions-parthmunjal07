@@ -54,20 +54,70 @@
  */
 export function repeatChar(char, n) {
   // Your code here
+  if (typeof char !== "string" || char === "" || n<0) return ""
+  if (n == 0) return ""
+  else {
+    return char + repeatChar(char,n-1)
+  }
 }
 
 export function sumNestedArray(arr) {
   // Your code here
+  if (!Array.isArray(arr) || arr.length === 0) return 0;
+
+  const first = arr[0];
+  const rest = arr.slice(1);
+  let firstValue = 0;
+  
+  if (Array.isArray(first)) {
+    firstValue = sumNestedArray(first);
+  } 
+  else if (typeof first === "number") {
+    firstValue = first;
+  }
+
+  return firstValue + sumNestedArray(rest);
 }
 
 export function flattenArray(arr) {
   // Your code here
+  if (!Array.isArray(arr)) return [];
+  if (arr.length === 0) return [];
+
+  const first = arr[0];
+  const rest = arr.slice(1);
+
+  if (Array.isArray(first)) {
+    return [...flattenArray(first), ...flattenArray(rest)];
+  } 
+  else {
+    return [first, ...flattenArray(rest)];
+  }
 }
 
 export function isPalindrome(str) {
   // Your code here
+  if (typeof str !== "string") return false;
+  str = str.toLowerCase();
+  if (str.length <= 1) return true;
+  if (str[0] !== str[str.length - 1]) return false;
+
+  return isPalindrome(str.slice(1, -1));
 }
 
 export function generatePattern(n) {
   // Your code here
+  if (typeof n !== "number" || n <= 0 || !Number.isInteger(n)) return [];
+
+  const build = (currentStep) => {
+    if (currentStep === n) {
+      return [repeatChar("*", n)];
+    }
+
+    const stars = repeatChar("*", currentStep);
+    
+    return [stars, ...build(currentStep + 1), stars];
+  };
+
+  return build(1);
 }

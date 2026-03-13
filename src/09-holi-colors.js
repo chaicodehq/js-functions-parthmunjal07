@@ -55,20 +55,59 @@
  */
 export function mixColors(color1, color2) {
   // Your code here
+  if (color1 === null || color2 === null || typeof color1 !== "object" || typeof color2 !== "object") return null
+  let newColor = {
+    name: `${color1.name}-${color2.name}`,
+    r: Math.round((color1.r + color2.r) / 2),
+    g: Math.round((color1.g + color2.g) / 2),
+    b: Math.round((color1.b + color2.b) / 2)
+  }
+  return newColor
 }
 
 export function adjustBrightness(color, factor) {
   // Your code here
+  if (color === null || typeof color !== "object" || typeof factor !== "number") return null
+  let ans = structuredClone(color)
+  ans.r *= factor
+  ans.g *= factor
+  ans.b *= factor
+  if (ans.r > 255) ans.r = 255
+  if (ans.g > 255) ans.g = 255
+  if (ans.b > 255) ans.b = 255
+  return ans
 }
 
 export function addToPalette(palette, color) {
+  if (!Array.isArray(palette)) return [color]
+  let ans = [...palette]
+  if (color === null || typeof color !== "object") return ans
+  ans.push(color)
+  return ans
   // Your code here
 }
 
 export function removeFromPalette(palette, colorName) {
   // Your code here
+  if (!Array.isArray(palette)) return []
+  let ans = [...palette]
+  return ans.filter(obj => obj.name !== colorName )
+
 }
 
 export function mergePalettes(palette1, palette2) {
   // Your code here
+  const p1 = Array.isArray(palette1) ? palette1 : [];
+  const p2 = Array.isArray(palette2) ? palette2 : [];
+
+  const combined = [...p1, ...p2];
+  const seenNames = new Set();
+
+  return combined.filter(color => {
+    if (!color || !color.name || seenNames.has(color.name)) {
+      return false;
+    }
+    seenNames.add(color.name);
+    return true;
+  });
 }

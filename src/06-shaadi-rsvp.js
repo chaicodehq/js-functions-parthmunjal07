@@ -47,16 +47,40 @@
  */
 export function processGuests(guests, filterFn) {
   // Your code here
+  if (!Array.isArray(guests) || guests.length == 0 || typeof filterFn !== "function") return []
+  let ans = guests.filter((e) => filterFn(e) )
+  return ans
 }
 
 export function notifyGuests(guests, notifyCallback) {
   // Your code here
+  if (!Array.isArray(guests) || guests.length == 0 || typeof notifyCallback !== "function") return []
+  let ans = guests.map((e) => notifyCallback(e))
+  return ans
 }
 
 export function handleRSVP(guest, onAccept, onDecline) {
   // Your code here
+  if (guest === null || typeof guest === "undefined" || typeof onAccept !== "function" || typeof onDecline !== "function") return null
+  if (guest.rsvp == "yes") {
+    const res = onAccept(guest);
+    return res
+  }
+  else if (guest.rsvp == "no") {
+    const res = onDecline(guest)
+    return res
+  } 
+  else return null
 }
 
 export function transformGuestList(guests, ...transformFns) {
   // Your code here
+  if (!Array.isArray(guests) || guests.length == 0) return []
+  let res = guests
+  for (const fn of transformFns) {
+    if (typeof fn === "function"){
+      res = fn(res)
+    }
+  }
+  return res
 }
